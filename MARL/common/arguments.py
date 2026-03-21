@@ -21,8 +21,8 @@ def get_common_args():
     parser.add_argument('--optimizer', type=str, default="RMS", help='optimizer')
     parser.add_argument('--evaluate_epoch', type=int, default=20, help='number of the epoch to evaluate the agent')
 
-    parser.add_argument('--result_dir', type=str, default='/home/dell/桌面/test5/QMIX_MARL/result', help='model directory of the policy')
-    parser.add_argument('--load_model_dir', type=str, default='/home/dell/桌面/test5/QMIX_MARL/MARL/model', help='result directory of the policy')
+    parser.add_argument('--result_dir', type=str, default='path/to/result', help='model directory of the policy')
+    parser.add_argument('--load_model_dir', type=str, default='path/to/model', help='result directory of the policy')
 
     parser.add_argument('--load_model', type=bool, default=True, help='whether to load the pretrained model')
     parser.add_argument('--learn', type=bool, default=True, help='whether to train the model')
@@ -34,8 +34,8 @@ def get_common_args():
 
 def get_mixer_args(args):
     # network
-    args.rnn_hidden_dim =  82  #82 #128 #64
-    args.qmix_hidden_dim = 64 #32
+    args.rnn_hidden_dim =  82  
+    args.qmix_hidden_dim = 64
     args.two_hyper_layers =  True
     args.hyper_hidden_dim = 64
     args.qtran_hidden_dim = 64
@@ -52,8 +52,7 @@ def get_mixer_args(args):
     args.n_epoch =  1501#2300 #5000  #15000
 
     # the number of the episodes in one epoch
-    args.n_episodes = 28#28 #120   #必须为使用进程数的倍数
-
+    args.n_episodes = 28#28 #120  
     # the number of the train steps in one epoch
     args.train_steps = 1
 
