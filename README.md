@@ -3,11 +3,7 @@ Source code for the paper: "Enhancing Fire Evacuation Safety in Underground Rail
 
 ###### Implementation
 
-```python
-python main.py
-```
-
 Hyper-paras can be found in './MARL/common/arguments.py'
 
-
+Updating...
 
