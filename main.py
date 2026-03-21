@@ -16,14 +16,10 @@ import multiprocessing
 
 import matplotlib.pyplot as plt
 
-
-
-
-# 强化学习决策函数，带入来自DRL的强化学习agent
 def marl_agent_wrapper():
     args = get_common_args()
 
-    if args.alg.find('coma') > -1:  # 判断模型的参数
+    if args.alg.find('coma') > -1: 
         args = get_coma_args(args)
     elif args.alg.find('central_v') > -1:
         args = get_centralv_args(args)
@@ -36,9 +32,7 @@ def marl_agent_wrapper():
     if args.alg.find('g2anet') > -1:
         args = get_g2anet_args(args)
 
-    # 加载调度环境
     env = DynamicSignalEnv(args)
-    #env.reset()
     env_info = env.get_env_info()
     args.n_actions = env_info["n_actions"] #4
     args.n_agents = env_info["n_agents"] #19
@@ -47,8 +41,7 @@ def marl_agent_wrapper():
     args.episode_limit = env_info["episode_limit"]
     print("\n是否加载模型（测试必须）：", args.load_model, "是否打印中间变量：", args.havelook, "是否训练：",args.learn)
 
-    # 用来保存plt和pkl
-    save_path = args.result_dir + '/' + args.alg  # + '/' + args.map
+    save_path = args.result_dir + '/' + args.alg 
     if not os.path.exists(save_path):
         os.makedirs(save_path)
     save_path_dir = get_next_folder(save_path, args.map + "_")
@@ -66,23 +59,17 @@ def marl_agent_wrapper():
         os.makedirs(train_save_path_actions)
     args.save_path = train_save_path
     parameters = vars(args)
-    # 指定要保存的文件名
     filename = train_save_path +'/training_parameters.json'
-    # 写入JSON文件
     with open(filename, 'w') as file:
         json.dump(parameters, file, indent=4)
 
     runner = Runner(env, args)
 
     if args.learn:
-        runner.run(0)  # 原来跑多种算法，run传入的是算法的id
-
-        # 假设这些是你的损失值，存储为字符串（如你所提供）
+        runner.run(0) 
         with open(train_save_path+"/historydata/loss.txt", 'r') as file:
             lines = file.readlines()
-        # 提取数值
         loss_values = [float(loss.split('(')[1].split(',')[0]) for loss in lines]
-        # 绘制图形
         plt.figure(figsize=(10, 5))
         plt.plot(loss_values, marker='o', linestyle='-', color='b', markerfacecolor='black', markersize=1)
         plt.title('Loss per Time Step')
@@ -95,19 +82,15 @@ def marl_agent_wrapper():
         print('The ave_reward of {} is  {}'.format(args.alg, reward))
 
 def get_next_folder(base_path, folder_prefix):
-    # 列出base_path下的所有项
     dirs = os.listdir(base_path)
-    # 使用正则表达式找到符合特定格式的文件夹
     pattern = re.compile(f"^{folder_prefix}(\\d+)$")
     max_num = 0
     for dir in dirs:
         match = pattern.match(dir)
         if match:
-            # 提取数字并更新最大值
             num = int(match.group(1))
             if num > max_num:
                 max_num = num
-    # 返回下一个编号的文件夹名
     return f"{folder_prefix}{max_num + 1}"
 
 
